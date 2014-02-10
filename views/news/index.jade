@@ -14,7 +14,7 @@ block content
               if filteredSource
                 | News from #{filteredSource}
               else
-                | Recent News
+                | Top News
     else
         .row.user-profile
             .col-md-6
@@ -47,13 +47,9 @@ block content
                 th #
                 th
                 th Votes
-                th
                 th Title
-                th Comments
                 if !filteredSource
                     th Source
-                if !filteredUser
-                    th User
         tbody.news-table
             each item, index in items
                 tr
@@ -67,7 +63,6 @@ block content
 
                     td
                         span.badge= item.votes
-                    td.timeago(title="#{item.created}")= timeago(item.created)
                     td
                         a(href=item.url)
                             | #{item.title}
@@ -76,16 +71,18 @@ block content
                             a(href="#", class="show-summary")
                                 | ...
                         br
+                        span
+                            small.submit-date(title="#{item.created}")= timeago(item.created)
+                            small #{' '}by#{' '}
+                            a(href='/news/user/' + item.poster.username)
+                                small #{item.poster.username}
+                            small #{' '}with#{' '}
+                            a(href='/news/' + item._id)
+                                small #{item.comment_count} comment(s)
+                        br
                         p(class='hidden summary')
                             em= item.summary
-                    td
-                        a(href='/news/' + item._id)
-                            | #{item.comment_count}
                     if !filteredSource
                         td
                             a(href='/news/source/' + item.source)
                                 | #{item.source}
-                    if !filteredUser
-                        td
-                            a(href='/news/user/' + item.poster.username)
-                                | #{item.poster.username}
