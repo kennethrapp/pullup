@@ -1,39 +1,37 @@
 extends ../layout
 
 block content
-    if !user
-        .alert.alert-info
-            i.fa.fa-cloud-upload
-            strong Join this site via pull request!
-            |  Make the site better and become a full member. See <a href="/about">here</a> for more details.
+  div.news-item
+    include ../partials/joinsite
 
     .page-header
-        h4
+        h3
             a(href=item.url)= item.title
-            if item.summary
+            if item.summary && ! item.isSelfPost()
                 | &nbsp;
                 a(href="#", class="show-summary")
                     | ...
-                br
-                p(class='hidden summary')
-                    em= item.summary
-        | submitted 
+        h4
+          p(class="item-summary #{item.isSelfPost() ? '' : 'hidden'}")= item.summary
+        = 'submitted '
         span.timeago(title="#{item.created}")= timeago(item.created)
-        |  by 
-        a(href='/news/user/' + item.poster.username)= item.poster.username
-        |  from 
-        a(href='/news/source/' + item.source)= item.source
-    .row
-      form(action=item._id + '/comments', method='POST')
-        textarea.form-control(name='contents')
-        br
-        input.btn.btn-primary(type='submit', value='Add Comment')
+        = ' by '
+        a(href='/news/user/' + item.poster.username, class='user')= item.poster.username
+        = ' from '
+        a(href='/news/source/' + item.source, class='source')= item.source
+    if user
+        .row
+          form(action=item._id + '/comments', method='POST')
+            textarea.form-control(name='contents')
+            br
+            input.btn.btn-primary(type='submit', value='Add Comment')
 
     each comment, index in comments
-      p.comment
+      div.comment
         a(href='/news/user/' + comment.poster.username)= comment.poster.username
-        &nbsp;
         span.timeago(title="#{comment.created}")= timeago(comment.created)
-        blockquote.content= comment.contents
-
-
+        blockquote.content
+            if user && user.username == comment.poster.username
+                form(action="/news/" + item.id + "/comments/" + comment.id + "/delete", method='POST', class="delete-form")
+                  button(type="submit", class="delete btn btn-danger btn-xs pull-right", title="Delete") ×
+            = comment.contents

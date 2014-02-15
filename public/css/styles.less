@@ -26,6 +26,23 @@ body {
   padding: 0 0 120px;
 }
 
+#flash {
+  margin: 0 auto; padding-right: @grid-gutter-width;
+  position: fixed; z-index: 1000;
+
+  @media (min-width: @screen-sm-min) {
+    width: @container-sm;
+  }
+  @media (min-width: @screen-md-min) {
+    width: @container-md;
+  }
+  @media (min-width: @screen-lg-min) {
+    width: @container-lg;
+  }
+
+  .alert { margin-bottom: 0; }
+}
+
 #footer {
   height: 110px;
   padding-top: 15px;
@@ -41,36 +58,88 @@ body {
   height: 30px;
   margin: -15px 15px -15px 0;
 }
+.navbar-inverse {
+  border-bottom: 2px solid #139C82;
+}
+.navbar-inverse a {
+  text-shadow: 1px 1px 0px rgba(3, 85, 69, 0.2);
+}
+
+.navbar-brand {
+  line-height: 0.93em;
+}
 
 // News Table
 // -------------------------
 .news-table a:visited {
-  color: #bdcfcc;
+  color: #a6bfbb;
 }
 
 .news-table .upvote {
   border: none;
   background: none;
+  &:hover {
+    color: #18bc9c;
+  }
 }
 
 .news-table a.show-summary {
-  color: #bdcfcc; 
+  color: #bdcfcc;
 }
 
 .news-table a.show-summary:visited {
-  color: #bdcfcc; 
+  color: #bdcfcc;
 }
 
 .news-table .summary {
   color: rgba(0, 0, 0, 0.65);
 }
 
+.news-table .parent .comments {
+  margin: 0 0 0 5px;
+}
+
+.news-table .delete {
+  margin: 0 5px 0 0;
+}
+
+// News Item
+// -------------------------
+
+.news-item .row {
+  margin: 0 0 10px;
+}
+
+.news-item .comment .timeago {
+  margin: 0 5px;
+}
+
+.comment .delete-form {
+  display: inline;
+}
+
+.comment .delete {
+  font-size: 12px;
+  line-height: 0.9;
+  padding: 2px;
+  width: 16px; height: 16px;
+  position: absolute; top: 6px; right: 2px;
+  border-radius: 50%;
+}
+
+.comment .content {
+  background-color: #f6f7f8;
+  position: relative;
+}
+
+#comments blockquote { margin-bottom: 0; }
+
 // User Profile
 // -------------------------
 
 .user-profile {
   @height: @line-height-computed * 3;
-  
+
   h1 {
     margin: 0;
     line-height: @height;
@@ -90,6 +159,9 @@ body {
     }
     dd { display: inline; }
   }
+}
+.user-profile + .page-header {
+  padding-bottom: 0;
 }
 
 // Social Buttons
@@ -137,6 +209,16 @@ body {
 
 // Miscellaneous
 // -------------------------
+
+// text-shadows on info buttons to make the text a little easier to read
+.btn-info {
+  text-shadow: 1px 1px 0px #2D81B9;
+}
+
+// Override color: inherit to make the close button actually visible
+.alert-dismissable .close {
+  color: #000;
+}
 
 // Extra space between font-awesome icons and text
 [class^="fa-"],
