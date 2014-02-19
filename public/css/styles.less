@@ -21,7 +21,7 @@ body {
   height: auto !important;
   height: 100%;
   /* Negative indent footer by its height */
-  margin: 0 auto -110px;
+  margin: 0 auto -75px;
   /* Pad bottom by footer height + (optional) extra spacing */
   padding: 0 0 120px;
 }
@@ -43,10 +43,64 @@ body {
   .alert { margin-bottom: 0; }
 }
 
+.page-header { position: relative; }
+
+// Footer
+// -------------------------
+
 #footer {
-  height: 110px;
+  height: 75px;
   padding-top: 15px;
 }
+#mobile-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #139C82;
+  background-color: white;
+
+  div {
+    height: 100%;
+  }
+
+  .footer-tab {
+    text-align: center;
+    color: #a6bfbb;
+    font-size: 12px;
+    padding: 10px 0;
+
+    &.active, &:active {
+      color: #139C82;
+      text-decoration: none;
+    }
+
+    i {
+      position: relative;
+      top: 5px;
+      font-size: 20px;
+      display: block;
+      padding-bottom: 5px;
+      margin-right: 0;
+    }
+  }
+}
+
+// Global Elements
+// -------------------------
+
+.delete-form { display: inline; }
+.delete {
+  font-size: 12px;
+  line-height: 0.9;
+  padding: 2px;
+  width: 16px; height: 16px;
+  position: absolute; top: 6px; right: 2px;
+  border-radius: 50%;
+}
+
+.modal { font-size: @font-size-base; }
+.modal .modal-footer button { margin: 0 0 0 10px; }
 
 // Navbar
 // -------------------------
@@ -69,8 +123,31 @@ body {
   line-height: 0.93em;
 }
 
+// Nav menus
+// -------------------------
+
+.nav-stacked li.active a,
+.nav-stacked li.active a:hover {
+  background: @brand-success;
+  border: 1px solid @brand-success;
+  border-radius: 3px;
+  color: #fff;
+}
+
+// Sidebar
+// -------------------------
+
+.sidebar {
+  margin-top: 42px;
+}
+
 // News Table
 // -------------------------
+
+.news-table td {
+  position: relative;
+}
+
 .news-table a:visited {
   color: #a6bfbb;
 }
@@ -114,6 +191,11 @@ body {
   margin: 0 5px;
 }
 
+.news-item .item-summary {
+  font-size: 15px;
+  line-height: 1.4em;
+}
+
 .comment .delete-form {
   display: inline;
 }
@@ -155,7 +237,7 @@ body {
   dl {
     dt {
       float: left;
-      width: 80px;
+      margin-right: 5px;
     }
     dd { display: inline; }
   }

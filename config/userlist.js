@@ -1,7 +1,7 @@
 module.exports = {
     users: [ // ADD YOUR USERNAME IN ITS ALPHABETICAL SLOT
-        'avaynshtok',
         'andersos',
+        'avaynshtok',
         'barretts',
         'bluetidepro',
         'bobnisco',
@@ -32,6 +32,7 @@ module.exports = {
         'jeromegn',
         'jmcelwain',
         'joewright',
+        'jordancalder',
         'josephwegner',
         'jphatton',
         'julbaxter',
@@ -39,9 +40,9 @@ module.exports = {
         'kasperlewau',
         'kennethrapp',
         'lablayers',
+        'LeandroLovisolo',
         'lgarron',
         'lukemiles',
-        'LeandroLovisolo',
         'marco-fiset',
         'markbao',
         'mattclaw',
@@ -49,6 +50,9 @@ module.exports = {
         'michaelnovakjr',
         'mreinhardt',
         'msied',
+        'naturalethic',
+        'omphalosskeptic',
+        'parenparen',
         'pents90',
         'pksjce',
         'qguv',
@@ -61,13 +65,14 @@ module.exports = {
         'sp1d3rx',
         'sriehl',
         'swelham',
-        'thomascate',
         'tejohnso',
         'theprofessor117',
+        'thomascate',
         'tito0224',
         'travishorn',
         'treygriffith',
         'utdemir',
-        'williamle8300'
+        'williamle8300',
+        'willurd'
     ]
 };
