@@ -12,6 +12,7 @@ var passport = require('passport');
 var expressValidator = require('express-validator');
 var argv = require('optimist').argv;
 var timeago = require('timeago');
+var request = require('request');
 var _ = require('underscore');
 
 /**
@@ -49,6 +50,42 @@ mongoose.connection.on('error', function() {
   console.log('✗ MongoDB Connection Error. Please make sure MongoDB is running.'.red);
 });
 
+/**
+ * Get the current commit hash from Heroku
+ */
+ var commit = false;
+if(secrets.heroku.email && secrets.heroku.authToken && secrets.heroku.app) {
+  console.log(secrets.heroku);
+  request.get('https://api.heroku.com/apps/'+encodeURIComponent(secrets.heroku.app)+'/releases', {
+    auth: {
+      user: secrets.heroku.email, 
+      pass: secrets.heroku.authToken
+    },
+    headers: {
+      order: "version"
+    }
+  },
+  function(error, response, body) {
+    if(!error) {
+      var releases;
+      try {
+        releases = JSON.parse(body);
+      } catch(err) {
+        console.log("Error parsing Heroku releases JSON");
+        return false;
+      }
+
+      if(releases.length) {
+        commit = releases[releases.length - 1].commit;
+      }
+
+
+    } else {
+      console.log("Error getting releases from Heroku", error, body);
+    }
+  });
+}
+
 
 /**
  * Express configuration.
@@ -83,8 +120,10 @@ app.use(passport.session());
 app.use(function(req, res, next) {
   res.locals({
     user: req.user,
+    cookies: req.cookies,
     pullup: { // global client-side JS object
-      baseUrl: req.protocol + '://' + req.get('host')
+      baseUrl: req.protocol + '://' + req.get('host'),
+      commit: commit
     }
   });
 
@@ -119,14 +158,13 @@ app.locals.timeago = timeago;
 /**
  * Sign in / out Routes
  */
-app.get('/login', userController.getLogin);
-app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
 
 /**
  * Static Page Routes
  */
 
+app.get('/', homeController.index);
 app.get('/about', homeController.about);
 app.get('/bookmarklet', homeController.bookmarklet);
 app.get('/signup', homeController.signup);
@@ -141,8 +179,6 @@ app.post('/contact', contactController.postContact);
 /**
  * User Account Routes
  */
-
-app.get('/', newsController.index);
 app.get('/account', passportConf.isAuthenticated, userController.getAccount);
 app.post('/account/profile', passportConf.isAuthenticated, userController.postUpdateProfile);
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);
@@ -155,6 +191,7 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
 
 app.get('/news', newsController.index);
 app.get('/news/page/:page', newsController.index);
+app.get('/rss', newsController.index);
 app.get('/news/submit', passportConf.isAuthenticated, newsController.submitNews);
 app.post('/news/submit', passportConf.isAuthenticated, newsController.postNews);
 
@@ -195,6 +232,7 @@ app.get('/api/aviary', apiController.getAviary);
 app.get('/api/paypal', apiController.getPayPal);
 app.get('/api/paypal/success', apiController.getPayPalSuccess);
 app.get('/api/paypal/cancel', apiController.getPayPalCancel);
+app.post('/api/markdown', apiController.getMarkdown);
 
 /**
  * OAuth routes for sign-in.

@@ -58,6 +58,12 @@ var FlashBuilder = function (type, messages) {
 
 $(document).ready(function() {
 
+  if ($("button.alert-joinsite").length > 0) {
+    $("button.alert-joinsite").click(function () {
+      document.cookie = "skip_alert=true; path=/";
+    });
+  }
+
   if ($("#url").length > 0) {
     $("#title").on('focus', function() {
       var url = $("#url").val();
@@ -140,7 +146,7 @@ $(document).ready(function() {
           if (data.success) {
             $('button.upvote', form).remove();
 
-            var voteElement = $('.vote-count', form.closest('tr'));
+            var voteElement = $('.vote-count', form.closest('.news-item'));
             voteElement.text(parseInt(voteElement.text()) + 1);
           }
         })
@@ -149,6 +155,29 @@ $(document).ready(function() {
         });
 
       e.preventDefault();
+    });
+  }
+
+  if($(".form-group.markdown").length) {
+    $(document).on('show.bs.tab', '.form-group.markdown', function(e) {
+      if(e.target.getAttribute("href") === "#preview-tab-content") {
+        $content = $(this).find("#preview-tab-content");
+        $content.html("Loading...");
+
+        $.ajax({
+          type: "POST",
+          url: "/api/markdown",
+          data: {
+            source: $(this).find("textarea").val()
+          },
+          success: function(msg) {
+            $content.html(msg.result);
+          },
+          error: function(msg) {
+            $content.html("There was an error retrieving your markdown...");
+          }
+        });
+      }
     });
   }
 
